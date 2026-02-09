@@ -1,43 +1,38 @@
 package com.example.etms_backend.config;
-
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import jakarta.annotation.PostConstruct;
 import org.springframework.context.annotation.Configuration;
-
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 @Configuration
 public class FirebaseConfig {
 
     @PostConstruct
-    public void init() throws Exception {
+    public void init() {
+        try {
+            String firebaseJson = System.getenv("FIREBASE_SERVICE_ACCOUNT");
 
-        String projectId = System.getenv("FIREBASE_PROJECT_ID");
-        String clientEmail = System.getenv("FIREBASE_CLIENT_EMAIL");
-        String privateKey = System.getenv("FIREBASE_PRIVATE_KEY");
+            if (firebaseJson == null || firebaseJson.isEmpty()) {
+                throw new IllegalStateException("FIREBASE_SERVICE_ACCOUNT not set");
+            }
 
-        // Important: fix line breaks
-        privateKey = privateKey.replace("\\n", "\n");
+            InputStream serviceAccount =
+                    new ByteArrayInputStream(firebaseJson.getBytes(StandardCharsets.UTF_8));
 
-        String firebaseConfig = "{"
-                + "\"type\": \"service_account\","
-                + "\"project_id\": \"" + projectId + "\","
-                + "\"private_key\": \"" + privateKey + "\","
-                + "\"client_email\": \"" + clientEmail + "\""
-                + "}";
+            FirebaseOptions options = FirebaseOptions.builder()
+                    .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                    .build();
 
-        ByteArrayInputStream serviceAccount =
-                new ByteArrayInputStream(firebaseConfig.getBytes(StandardCharsets.UTF_8));
+            if (FirebaseApp.getApps().isEmpty()) {
+                FirebaseApp.initializeApp(options);
+            }
 
-        FirebaseOptions options = FirebaseOptions.builder()
-                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                .build();
-
-        if (FirebaseApp.getApps().isEmpty()) {
-            FirebaseApp.initializeApp(options);
+        } catch (Exception e) {
+            throw new RuntimeException("Firebase initialization failed", e);
         }
     }
 }
