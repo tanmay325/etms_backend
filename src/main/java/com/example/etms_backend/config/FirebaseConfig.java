@@ -15,8 +15,6 @@ public class FirebaseConfig {
     @PostConstruct
     public void initialize() {
         try {
-            // Path to the service account key you downloaded from Firebase Console
-            // Place this file in src/main/resources/
             FileInputStream serviceAccount =
                     new FileInputStream("src/main/resources/serviceAccountKey.json");
 

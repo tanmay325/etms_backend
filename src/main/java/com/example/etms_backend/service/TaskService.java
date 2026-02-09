@@ -62,7 +62,6 @@ public class TaskService {
         task.setTitle(request.getTitle());
         task.setDescription(request.getDescription());
         
-        // Fixed: request.getPriority() is already a Priority enum
         task.setPriority(Priority.valueOf(request.getPriority()));
         
         task.setDeadline(request.getDeadline());
@@ -73,7 +72,7 @@ public class TaskService {
 
         Task savedTask = taskRepository.save(task);
         
-        // Notify Employee - Added Task ID for redirection
+        // Notify Employee - Task ID for redirection
         createInAppNotification(employee, "New Task Assigned", 
                 "Admin assigned you a new task: " + savedTask.getTitle(), savedTask.getId());
         
@@ -120,7 +119,6 @@ public class TaskService {
         task.setStatus(status);
         Task savedTask = taskRepository.save(task);
 
-        // Notify Employee of approval/rejection - Added Task ID for redirection
         String title = (status == TaskStatus.APPROVED) ? "Task Approved" : "Task Rejected";
         String msg = (status == TaskStatus.APPROVED) ? "Great job! Your task has been approved: " 
                                                      : "Please check feedback and rework on: ";
@@ -153,7 +151,7 @@ public class TaskService {
         }
     }
 
-    // Existing helpers
+
     public List<Task> getTasksForEmployee(User employee) {
         return taskRepository.findByEmployee(employee);
     }

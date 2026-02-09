@@ -46,7 +46,6 @@ public class AuthController {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();    
         String role = userDetails.getAuthorities().iterator().next().getAuthority();
 
-        // Fetch user from DB to get the actual name
         User user = userRepository.findByEmail(userDetails.getUsername()).get();
 
         return ResponseEntity.ok(new JwtResponse(jwt, 
@@ -56,7 +55,7 @@ public class AuthController {
                                  role));
     }
 
-    // ONLY ONE signup method, secured for ADMIN use
+
     @PostMapping("/signup")
     @PreAuthorize("hasRole('ADMIN')") 
     public ResponseEntity<?> registerUser(@RequestBody SignupRequest signUpRequest) {

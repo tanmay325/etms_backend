@@ -70,7 +70,6 @@ public class TaskController {
         Sort sort = sortDir.equalsIgnoreCase("desc") ? 
                     Sort.by(sortField).descending() : Sort.by(sortField).ascending();
 
-        // Call the filtered logic in service
         List<Task> tasks = taskService.getFilteredTasks(user, status, priority, employeeId, null, sort);
         
         return ResponseEntity.ok(tasks);

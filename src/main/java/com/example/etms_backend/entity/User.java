@@ -25,7 +25,7 @@ public class User {
 
     private String fcmToken;
 
-    // Added Profile Management Fields
+    //Profile Management Fields
     private String employeeId;
     private String designation;
     private String department;

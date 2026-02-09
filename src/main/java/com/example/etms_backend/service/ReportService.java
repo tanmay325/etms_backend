@@ -27,7 +27,6 @@ public class ReportService {
             PdfWriter.getInstance(document, out);
             document.open();
 
-            // Add Header
             Font font = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
             font.setSize(18);
             Paragraph p = new Paragraph("ETMS - Task Report", font);

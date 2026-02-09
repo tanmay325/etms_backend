@@ -28,7 +28,6 @@ public class ProfileController {
                 .getAuthentication().getPrincipal();
         User user = userRepository.findById(userDetails.getId()).get();
 
-        // Update allowed fields
         user.setName(profileData.getName());
         user.setDesignation(profileData.getDesignation());
         user.setDepartment(profileData.getDepartment());

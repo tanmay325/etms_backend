@@ -25,14 +25,14 @@ public class Task {
     private LocalDateTime deadline;
     private LocalDateTime createdAt;
     private LocalDateTime startDate;
-    private String estimatedTime; // e.g., "5 hours"
-    private boolean isDraft; //
+    private String estimatedTime; 
+    private boolean isDraft; 
 
     @ManyToOne
     @JoinColumn(name = "admin_id")
-    private User admin; // Who assigned it
+    private User admin;
 
     @ManyToOne
     @JoinColumn(name = "employee_id")
-    private User employee; // Who is doing it
+    private User employee; 
 }

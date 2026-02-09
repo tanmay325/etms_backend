@@ -26,7 +26,6 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/analytics")
-// REMOVED class-level @PreAuthorize
 public class AnalyticsController {
 
     @Autowired
@@ -37,9 +36,8 @@ public class AnalyticsController {
     ReportService reportService;
 
     @GetMapping("/summary")
-    @PreAuthorize("hasRole('ADMIN')") // ONLY ADMIN
+    @PreAuthorize("hasRole('ADMIN')") 
     public ResponseEntity<?> getSummary() {
-        // ... (Existing logic for Admin summary)
         long totalEmployees = userRepository.countByRole(Role.ROLE_EMPLOYEE);
         LocalDateTime startOfToday = LocalDateTime.now().with(java.time.LocalTime.MIN);
         long todayTasks = taskRepository.countByCreatedAtAfter(startOfToday);
@@ -56,9 +54,9 @@ public class AnalyticsController {
     }
 
     @GetMapping("/my-summary")
-    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')") // BOTH CAN ACCESS
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
     public ResponseEntity<?> getMySummary() {
-        User user = getCurrentUser(); // Uses the helper below
+        User user = getCurrentUser(); 
 
         LocalDateTime startOfToday = LocalDateTime.now().with(java.time.LocalTime.MIN);
         long today = taskRepository.countByEmployeeAndCreatedAtAfter(user, startOfToday);
@@ -75,7 +73,7 @@ public class AnalyticsController {
     }
 
     @GetMapping("/export-pdf")
-    @PreAuthorize("hasRole('ADMIN')") // ONLY ADMIN
+    @PreAuthorize("hasRole('ADMIN')") 
     public ResponseEntity<?> exportToPdf() {
         ByteArrayInputStream bis = reportService.generateTaskReport();
         var headers = new HttpHeaders();
@@ -83,7 +81,6 @@ public class AnalyticsController {
         return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF).body(new InputStreamResource(bis));
     }
 
-    // HELPER METHOD (CRITICAL)
     private User getCurrentUser() {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return userRepository.findById(userDetails.getId()).get();
