@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
 
+
 @RestController
 @RequestMapping("/api/attendance")
 public class AttendanceController {
@@ -103,6 +104,7 @@ public class AttendanceController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/all")
     public ResponseEntity<?> getAllAttendance(@RequestParam(required = false) String date) {
         LocalDate targetDate = (date != null) ? LocalDate.parse(date) : LocalDate.now();
         return ResponseEntity.ok(attendanceRepository.findByDate(targetDate));
