@@ -28,8 +28,8 @@ public class AttendanceController {
     private UserRepository userRepository;
 
     // Set your Office coordinates here (Target Location)
-    private static final double OFFICE_LAT = 18.5204; 
-    private static final double OFFICE_LON = 73.8567;
+    private static final double OFFICE_LAT = 18.561278848656077;
+    private static final double OFFICE_LON = 73.94472859501289;
 
     @PostMapping("/check-in")
     public ResponseEntity<?> checkIn(@RequestParam double lat, @RequestParam double lon) {
