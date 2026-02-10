@@ -37,7 +37,7 @@ public class AttendanceController {
         
         // 1. Check Geofencing (100m range)
         double distance = calculateDistance(lat, lon, OFFICE_LAT, OFFICE_LON);
-        if (distance > 100) {
+        if (distance > 500) {
             return ResponseEntity.badRequest().body("You are out of range (" + (int)distance + "m). Must be within 100m of office.");
         }
 
